@@ -1,7 +1,115 @@
-# This file should contain all the record creation needed to seed the database with its default values.
-# The data can then be loaded with the bin/rails db:seed command (or created alongside the database with db:setup).
-#
-# Examples:
-#
-#   movies = Movie.create([{ name: "Star Wars" }, { name: "Lord of the Rings" }])
-#   Character.create(name: "Luke", movie: movies.first)
+User.delete_all
+Province.delete_all
+
+ActiveRecord::Base.connection.execute("DELETE FROM sqlite_sequence WHERE name='users';")
+ActiveRecord::Base.connection.execute("DELETE FROM sqlite_sequence WHERE name='provinces';")
+
+provinces = [
+  {
+    "name": "Alberta",
+    "pst": 0,
+    "gst": 0.05,
+    "hst": 0
+  },
+  {
+    "name": "British Columbia",
+    "pst": 0.07,
+    "gst": 0.05,
+    "hst": 0
+  },
+  {
+    "name": "Manitoba",
+    "pst": 0.07,
+    "gst": 0.05,
+    "hst": 0
+  },
+  {
+    "name": "New Brunswick",
+    "pst": 0,
+    "gst": 0,
+    "hst": 0.15
+  },
+  {
+    "name": "Newfoundland and Labrador",
+    "pst": 0,
+    "gst": 0,
+    "hst": 0.15
+  },
+  {
+    "name": "Northwest Territories",
+    "pst": 0,
+    "gst": 0.05,
+    "hst": 0
+  },
+  {
+    "name": "Nova Scotia",
+    "pst": 0,
+    "gst": 0,
+    "hst": 0.15
+  },
+  {
+    "name": "Nunavut",
+    "pst": 0,
+    "gst": 0.05,
+    "hst": 0
+  },
+  {
+    "name": "Ontario",
+    "pst": 0,
+    "gst": 0,
+    "hst": 0.13
+  },
+  {
+    "name": "Prince Edward Island",
+    "pst": 0,
+    "gst": 0,
+    "hst": 0.15
+  },
+  {
+    "name": "Quebec",
+    "pst": 0.09975,
+    "gst": 0.05,
+    "hst": 0
+  },
+  {
+    "name": "Saskatchewan",
+    "pst": 0.06,
+    "gst": 0.05,
+    "hst": 0
+  },
+  {
+    "name": "Yukon",
+    "pst": 0,
+    "gst": 0.05,
+    "hst": 0
+  },
+]
+
+provinces.each do |province|
+  prov = Province.create(
+    name: province[:name].to_s,
+    pst: province[:pst].to_d,
+    gst: province[:gst].to_d,
+    hst: province[:hst].to_d
+  )
+
+  puts prov.errors.full_messages unless prov.valid?
+end
+
+puts "Created #{Province.count} provinces."
+
+50.times do
+  province = Province.find(rand(1..provinces.count))
+  user = province.users.create(
+    email: Faker::Internet.email,
+    password: "password"
+  )
+
+  if user and user.valid?
+    pp user
+  else
+    user.errors.full_messages
+  end
+end
+
+puts "Created #{User.count} users."
