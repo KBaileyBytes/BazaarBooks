@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_12_03_024211) do
+ActiveRecord::Schema[7.0].define(version: 2023_12_03_032124) do
   create_table "active_admin_comments", force: :cascade do |t|
     t.string "namespace"
     t.text "body"
@@ -43,6 +43,15 @@ ActiveRecord::Schema[7.0].define(version: 2023_12_03_024211) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "book_formats", force: :cascade do |t|
+    t.integer "book_id", null: false
+    t.integer "format_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["book_id"], name: "index_book_formats_on_book_id"
+    t.index ["format_id"], name: "index_book_formats_on_format_id"
+  end
+
   create_table "book_genres", force: :cascade do |t|
     t.integer "book_id", null: false
     t.integer "genre_id", null: false
@@ -62,6 +71,12 @@ ActiveRecord::Schema[7.0].define(version: 2023_12_03_024211) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["author_id"], name: "index_books_on_author_id"
+  end
+
+  create_table "formats", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "genres", force: :cascade do |t|
@@ -130,6 +145,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_12_03_024211) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "book_formats", "books"
+  add_foreign_key "book_formats", "formats"
   add_foreign_key "book_genres", "books"
   add_foreign_key "book_genres", "genres"
   add_foreign_key "books", "authors"

@@ -1,8 +1,10 @@
 User.delete_all
 Province.delete_all
+AdminUser.delete_all
 
 ActiveRecord::Base.connection.execute("DELETE FROM sqlite_sequence WHERE name='users';")
 ActiveRecord::Base.connection.execute("DELETE FROM sqlite_sequence WHERE name='provinces';")
+ActiveRecord::Base.connection.execute("DELETE FROM sqlite_sequence WHERE name='admin_user';")
 
 provinces = [
   {
@@ -105,8 +107,23 @@ puts "Created #{Province.count} provinces."
     password: "password"
   )
 
-  puts user and user.valid? ? "Created #{user.email}" : user.errors.full_messages
+  if user and user&.valid?
+    puts "Created #{user.email}"
+  else
+    puts "Error: #{user.errors.full_messages}"
+  end
 end
+
+Province.find(rand(1..Province.count)).users.create(
+  email: "user@test.com",
+  password:"password"
+)
+
+Province.find(rand(1..Province.count)).users.create(
+  email: "admin@test.com",
+  password:"password",
+  is_admin: true
+)
 
 puts "Created #{User.count} users."
 
