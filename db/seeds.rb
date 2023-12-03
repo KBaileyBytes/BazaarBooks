@@ -105,11 +105,9 @@ puts "Created #{Province.count} provinces."
     password: "password"
   )
 
-  if user and user.valid?
-    pp user
-  else
-    user.errors.full_messages
-  end
+  puts user and user.valid? ? "Created #{user.email}" : user.errors.full_messages
 end
 
 puts "Created #{User.count} users."
+
+AdminUser.create!(email: 'admin@example.com', password: 'password', password_confirmation: 'password') if Rails.env.development?

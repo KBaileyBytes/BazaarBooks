@@ -1,0 +1,17 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  author: one
+  average_rating: 9.99
+  page_count: 1
+  title: MyString
+  isbn: MyString
+  price: 9.99
+
+two:
+  author: two
+  average_rating: 9.99
+  page_count: 1
+  title: MyString
+  isbn: MyString
+  price: 9.99

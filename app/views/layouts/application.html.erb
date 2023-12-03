@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
     <%= javascript_importmap_tags %>
   </head>
-  <nav class="navbar p-4" role="navigation" aria-label="main navigation">
+  <nav class="navbar is-transparent p-4" role="navigation" aria-label="main navigation">
     <div class="navbar-brand">
       <%= link_to image_tag('logo.png'), root_path, class:"navbar-item" %>
       <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
@@ -32,6 +32,9 @@
               </a>
               <div class="navbar-dropdown is-right">
                 <%= link_to 'Profile', current_user, class:"navbar-item" %>
+                <% if current_user.is_admin %>
+                  <%= link_to 'Dashboard', new_admin_user_session_path, class:"navbar-item" %>
+                <% end %>
                 <hr class="navbar-divider">
                 <%= link_to 'Sign Out ', destroy_user_session_path, data: { "turbo-method": :delete }, class:"navbar-item" %>
               </div>
