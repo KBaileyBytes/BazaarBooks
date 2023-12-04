@@ -6,4 +6,5 @@ class Book < ApplicationRecord
   has_many :genres, through: :book_genres
   has_many :book_formats
   has_many :formats, through: :book_formats
+  has_one_attached :image
 end
