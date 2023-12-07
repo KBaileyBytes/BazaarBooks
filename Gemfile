@@ -74,3 +74,6 @@ end
 gem "activeadmin", "2.11"
 gem "devise", "~> 4.9"
 gem "faker"
+gem "ruby-progressbar"
+gem "font-awesome-sass", "~> 6.5.1"
+gem 'kaminari'

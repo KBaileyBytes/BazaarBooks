@@ -1,0 +1,41 @@
+<section class="hero is-link">
+  <div class="hero-body">
+    <p class="title">
+      Browse Books
+    </p>
+  </div>
+</section>
+<div class="section">
+  <p class="title">
+    Newly Added
+  </p>
+  <nav class="columns is-multiline is-centered">
+    <% @books.order(created_at: :desc).limit(6).each do |book| %>
+      <div class="column level-item">
+        <div class="card">
+          <div class="card-image">
+            <figure class="image is-3by4">
+              <%= image_tag book.image %>
+            </figure>
+          </div>
+          <div class="card-content">
+            <div class="media">
+              <div class="media-content">
+                <%= link_to book.title.truncate_words(4, omission: " . . ."), book, class: "is-4" %>
+                <br>
+                by <%= link_to book.author.name, book.author, class: "is-6" %>
+                <br>
+                <p>
+                  <%= book.genres.first.name %>
+                </p>
+              </div>
+            </div>
+            <div class="content">
+              <time datetime="<%= book.created_at %>"><%= time_ago_in_words(book.created_at).capitalize %> ago</time>
+            </div>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </nav>
+</div>

@@ -7,6 +7,7 @@
     <%= csp_meta_tag %>
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <%= javascript_importmap_tags %>
   </head>
   <nav class="navbar is-transparent p-4" role="navigation" aria-label="main navigation">
@@ -21,11 +22,13 @@
     <div id="navbarBasicExample" class="navbar-menu">
       <div class="navbar-start">
         <%= link_to 'Home', root_path, class:"navbar-item" %>
+        <%= link_to 'Books', books_path, class:"navbar-item" %>
+        <%= link_to 'Authors', authors_path, class:"navbar-item" %>
       </div>
       <div class="navbar-end">
         <div class="navbar-item">
           <% if user_signed_in? %>
-            <p>Welcome <%= current_user.first_name ? current_user.first_name : current_user.email %></p>
+            <p>Welcome <%= current_user.first_name.present? ? current_user.first_name : current_user.email %></p>
             <div class="navbar-item has-dropdown is-hoverable">
               <a class="navbar-link">
                 More
@@ -50,20 +53,19 @@
     </div>
   </nav>
   <body>
-    <div class="container">
-      <% if notice %>
-        <div class="notification is-success">
-          <button class="delete"></button>
-          <%= notice %>
-        </div>
-      <% end %>
-      <% if alert %>
-        <div class="notification is-warning">
-          <button class="delete"></button>
-          <%= alert %>
-        </div>
-      <% end %>
-      <%= yield %>
-    </div>
+    <% if notice %>
+      <div class="notification is-success">
+        <button class="delete"></button>
+        <%= notice %>
+      </div>
+    <% end %>
+    <% if alert %>
+      <div class="notification is-warning">
+        <button class="delete"></button>
+        <%= alert %>
+      </div>
+    <% end %>
+    <%= yield %>
   </body>
+</div>
 </html>

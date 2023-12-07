@@ -1,2 +1,78 @@
-<h1>Home#index</h1>
-<p>Find me in app/views/home/index.html.erb</p>
+<section class="hero is-primary">
+  <div class="hero-body">
+    <p class="title">
+      Bazaar Books
+    </p>
+    <p class="subtitle">
+      <%= Book.count %> titles and counting.
+    </p>
+  </div>
+</section>
+<div class="section">
+  <div class="section">
+    <p class="title">All Books</p>
+    <%= paginate @books %>
+  </div>
+  <div class="columns">
+    <div class="column">
+      <div class="container ml-6">
+        <aside class="menu">
+          <strong>
+            <p class="menu-label">
+              Genres
+            </p>
+          </strong>
+          <ul class="menu-list">
+            <% @genres.each do |genre| %>
+              <li>
+                <a href="#">
+                  <span class="has-text-link"><%= genre.name %></span>
+                  (<em><%= Book.joins(:genres).where(genres: { id: genre.id }).count %>)</em>
+                </a>
+              </li>
+            <% end %>
+          </ul>
+        </aside>
+      </div>
+    </div>
+    <div class="column is-9">
+      <div class="container">
+        <% @books.order(created_at: :asc).in_groups_of(5, false) do |batch| %>
+          <div class="block">
+            <nav class="columns is-multiline is-centered">
+              <% batch.compact.each do |book| %>
+                <div class="column">
+                  <div class="card">
+                    <div class="card-image">
+                      <figure class="image is-3by4">
+                        <%= image_tag book.image %>
+                      </figure>
+                    </div>
+                    <div class="card-content">
+                      <div class="media">
+                        <div class="media-content">
+                          <strong class="is-4">
+                            <%= link_to book.title.truncate(24, omission: " ..."), book %>
+                          </strong>
+                          <p class="subtitle is-6">
+                            by <%= link_to book.author.name.truncate(24, omission: " ..."), book.author %>
+                          </p>
+                          <p class="is-size-6">
+                            <%= book.genres.first.name %>
+                          </p>
+                        </div>
+                      </div>
+                      <div class="content">
+                        <time datetime="<%= book.created_at %>"><%= time_ago_in_words(book.created_at).capitalize %> ago</time>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              <% end %>
+            </nav>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

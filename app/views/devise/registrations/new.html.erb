@@ -1,47 +1,84 @@
-<h2>Sign up</h2>
-<%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
-  <%= render "devise/shared/error_messages", resource: resource %>
-  <div class="field">
-    <%= f.label :email %><br />
-    <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
+<section class="hero is-success">
+  <div class="hero-body">
+    <p class="title">
+      Sign Up
+    </p>
   </div>
-  <div class="field">
-    <%= f.label :first_name %><br />
-    <%= f.text_field :first_name, autocomplete: "first_name" %>
-  </div>
-  <div class="field">
-    <%= f.label :last_name %><br />
-    <%= f.text_field :last_name, autocomplete: "last_name" %>
-  </div>
-  <div class="field">
-    <%= f.label :address %><br />
-    <%= f.text_field :address, autocomplete: "address" %>
-  </div>
-  <div class="field">
-    <%= f.label :province_id %><br />
-    <%= f.collection_select :province_id, Province.order(:name), :id, :name %>
-  </div>
-  <div class="field">
-    <%= f.label :phone %><br />
-    <%= f.phone_field :phone, autocomplete: "phone" %>
-  </div>
-  <div class="field">
-    <%= f.label :postal_code %><br />
-    <%= f.text_field :postal_code, autocomplete: "postal_code" %>
-  </div>
-  <div class="field">
-    <%= f.label :password %>
-    <% if @minimum_password_length %>
-      <em>(<%= @minimum_password_length %> characters minimum)</em>
-    <% end %><br />
-    <%= f.password_field :password, autocomplete: "new-password" %>
-  </div>
-  <div class="field">
-    <%= f.label :password_confirmation %><br />
-    <%= f.password_field :password_confirmation, autocomplete: "new-password" %>
-  </div>
-  <div class="actions">
-    <%= f.submit "Sign up" %>
-  </div>
-<% end %>
-<%= render "devise/shared/links" %>
+</section>
+<div class="section">
+  <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
+    <%= render "devise/shared/error_messages", resource: resource %>
+    <div class="field">
+      <%= f.label :email, class: "label" %>
+      <div class="control has-icons-left">
+        <span class="icon is-small is-left">
+          <i class="fas fa-envelope"></i>
+        </span>
+        <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "input" %>
+      </div>
+    </div>
+    <div class="field">
+      <%= f.label :first_name, class: "label" %>
+      <div class="control">
+        <%= f.text_field :first_name, class: "input" %>
+      </div>
+    </div>
+    <div class="field">
+      <%= f.label :last_name, class: "label" %>
+      <div class="control">
+        <%= f.text_field :last_name, class: "input" %>
+      </div>
+    </div>
+    <div class="field">
+      <%= f.label :address, class: "label" %>
+      <div class="control">
+        <%= f.text_field :address, class: "input" %>
+      </div>
+    </div>
+    <div class="field">
+      <%= f.label :province_id, class: "label" %>
+      <div class="control">
+        <div class="select">
+          <%= f.collection_select :province_id, Province.order(:name), :id, :name, prompt: "Select a Province" %>
+        </div>
+      </div>
+    </div>
+    <div class="field">
+      <%= f.label :phone, class: "label" %>
+      <div class="control">
+        <%= f.text_field :phone, class: "input" %>
+      </div>
+    </div>
+    <div class="field">
+      <%= f.label :postal_code, class: "label" %>
+      <div class="control">
+        <%= f.text_field :postal_code, class: "input" %>
+      </div>
+    </div>
+    <div class="field">
+      <%= f.label :password, class: "label" %>
+      <% if @minimum_password_length %>
+        <em>(<%= @minimum_password_length %> characters minimum)</em>
+      <% end %>
+      <div class="control">
+        <%= f.password_field :password, class: "input" %>
+      </div>
+    </div>
+    <div class="field">
+      <%= f.label :password_confirmation, class: "label" %>
+      <div class="control">
+        <%= f.password_field :password_confirmation, class: "input" %>
+      </div>
+    </div>
+    <div class="actions field is-grouped">
+      <div class="control">
+        <%= f.submit "Sign up", class: "button is-link" %>
+      </div>
+    </div>
+    <div class="control">
+      <%- if controller_name != 'sessions' %>
+        <%= link_to "Log in", new_session_path(resource_name), class: "is-link" %>
+      <% end %>
+    </div>
+  <% end %>
+</div>
