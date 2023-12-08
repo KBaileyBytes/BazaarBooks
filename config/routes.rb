@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  get 'user_pages/show'
   devise_for :admin_users, ActiveAdmin::Devise.config
   ActiveAdmin.routes(self)
   devise_for :users, controllers: {
@@ -11,5 +12,7 @@ Rails.application.routes.draw do
   resources 'authors', only: [:index, :show]
   resources 'users', only: [:show]
   resources 'orders', only: [:show, :create]
+  resources 'user_pages', only: [:show]
+  get 'books_by_genre/:genre_id', to: "home#index", as: :books_by_genre
   get 'home/index'
 end

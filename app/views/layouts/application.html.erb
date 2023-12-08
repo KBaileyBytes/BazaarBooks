@@ -24,6 +24,9 @@
         <%= link_to 'Home', root_path, class:"navbar-item" %>
         <%= link_to 'Books', books_path, class:"navbar-item" %>
         <%= link_to 'Authors', authors_path, class:"navbar-item" %>
+        <% @user_pages.each do |page| %>
+          <%= link_to page.title, user_page_path(page), class:"navbar-item" %>
+        <% end %>
       </div>
       <div class="navbar-end">
         <div class="navbar-item">

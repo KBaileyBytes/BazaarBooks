@@ -4,7 +4,7 @@
       Bazaar Books
     </p>
     <p class="subtitle">
-      <%= Book.count %> titles and counting.
+      <%= @books.total_count %> titles and counting.
     </p>
   </div>
 </section>
@@ -23,9 +23,15 @@
             </p>
           </strong>
           <ul class="menu-list">
+            <li>
+              <a href="<%= books_by_genre_path(genre_id: 0) %>">
+                <span class="has-text-link">All</span>
+                (<em><%= @genres.map { |genre| genre.books.count }.sum %>)</em>
+              </a>
+            </li>
             <% @genres.each do |genre| %>
               <li>
-                <a href="#">
+                <a href="<%= books_by_genre_path(genre_id: genre.id) %>">
                   <span class="has-text-link"><%= genre.name %></span>
                   (<em><%= Book.joins(:genres).where(genres: { id: genre.id }).count %>)</em>
                 </a>
@@ -44,7 +50,7 @@
                 <div class="column">
                   <div class="card">
                     <div class="card-image">
-                      <figure class="image is-3by4">
+                      <figure class="image is-4by5">
                         <%= image_tag book.image %>
                       </figure>
                     </div>
@@ -52,13 +58,15 @@
                       <div class="media">
                         <div class="media-content">
                           <strong class="is-4">
-                            <%= link_to book.title.truncate(24, omission: " ..."), book %>
+                            <%= link_to book.title.truncate(20, omission: " ..."), book %>
                           </strong>
                           <p class="subtitle is-6">
-                            by <%= link_to book.author.name.truncate(24, omission: " ..."), book.author %>
+                            by <%= link_to book&.author&.name&.truncate(20, omission: " ..."), book.author %>
                           </p>
                           <p class="is-size-6">
-                            <%= book.genres.first.name %>
+                            <a href="<%= books_by_genre_path(genre_id: book.genres.first.id) %>">
+                              <span class="has-text-link"><%= book.genres.first.name.truncate(24, omission: " ...") %></span>
+                            </a>
                           </p>
                         </div>
                       </div>
