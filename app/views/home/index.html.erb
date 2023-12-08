@@ -10,7 +10,7 @@
 </section>
 <div class="section">
   <div class="section">
-    <p class="title">All Books</p>
+    <p class="title"><%= @page_title %></p>
     <%= paginate @books %>
   </div>
   <div class="columns">
@@ -42,45 +42,60 @@
       </div>
     </div>
     <div class="column is-9">
-      <div class="container">
-        <% @books.order(created_at: :asc).in_groups_of(5, false) do |batch| %>
-          <div class="block">
-            <nav class="columns is-multiline is-centered">
-              <% batch.compact.each do |book| %>
-                <div class="column">
-                  <div class="card">
-                    <div class="card-image">
-                      <figure class="image is-4by5">
-                        <%= image_tag book.image %>
-                      </figure>
-                    </div>
-                    <div class="card-content">
-                      <div class="media">
-                        <div class="media-content">
-                          <strong class="is-4">
-                            <%= link_to book.title.truncate(20, omission: " ..."), book %>
-                          </strong>
-                          <p class="subtitle is-6">
-                            by <%= link_to book&.author&.name&.truncate(20, omission: " ..."), book.author %>
-                          </p>
-                          <p class="is-size-6">
-                            <a href="<%= books_by_genre_path(genre_id: book.genres.first.id) %>">
-                              <span class="has-text-link"><%= book.genres.first.name.truncate(24, omission: " ...") %></span>
-                            </a>
-                          </p>
-                        </div>
+      <% @books.order(created_at: :asc).in_groups_of(5, false) do |batch| %>
+        <div class="block">
+          <nav class="columns is-multiline is-centered">
+            <% batch.compact.each do |book| %>
+              <div class="column">
+                <div class="card">
+                  <div class="card-image">
+                    <figure class="image is-4by5">
+                      <%= image_tag book.image %>
+                    </figure>
+                  </div>
+                  <div class="card-content">
+                    <div class="media">
+                      <div class="media-content">
+                        <strong class="is-4">
+                          <%= link_to book.title.truncate(20, omission: " ..."), book %>
+                        </strong>
+                        <p class="subtitle is-6">
+                          by <%= link_to book&.author&.name&.truncate(20, omission: " ..."), book.author %>
+                        </p>
+                        <p class="is-size-6">
+                          <a href="<%= books_by_genre_path(genre_id: book.genres.first.id) %>">
+                            <span class="has-text-link"><%= book.genres.first.name.truncate(24, omission: " ...") %></span>
+                          </a>
+                        </p>
                       </div>
-                      <div class="content">
-                        <time datetime="<%= book.created_at %>"><%= time_ago_in_words(book.created_at).capitalize %> ago</time>
+                    </div>
+                    <div class="content">
+                      <div class="mb-1">
+                        <b>
+                          $<%= sprintf('%.2f', book.price) %>
+                        </b>
+                        <% book.formats.each do |book_format| %>
+                          <span class="tag">
+                            <%= book_format.name %>
+                          </span>
+                        <% end %>
+                      </div>
+                      <div class="is-flex is-align-items-center">
+                        <div class="mr-2">
+                          <span class="is-size-7"><i><%= book.average_rating.to_i %> / 10</i></span>
+                        </div>
+                        <div class="flex-grow">
+                          <progress class="progress is-primary" value="<%= book.average_rating %>" max="10"><%= book.average_rating %>%</progress>
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
-              <% end %>
-            </nav>
-          </div>
-        <% end %>
-      </div>
+              </div>
+            <% end %>
+          </nav>
+        </div>
+      <% end %>
     </div>
   </div>
 </div>

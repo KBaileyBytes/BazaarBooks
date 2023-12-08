@@ -1,5 +1,47 @@
-<h1>Books#show</h1>
-<h2><%= @book.title %></h2>
-<p>Find me in app/views/books/show.html.erb</p>
-<%= image_tag @book.image %>
-<%= link_to @book.author.name, @book.author %>
+<section class="hero is-info">
+  <div class="hero-body">
+    <p class="title"><%= @book.title %></p>
+  </div>
+</section>
+<div class="section">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-one-quarter">
+        <figure class="image is-16by9">
+          <%= image_tag @book.image, style: "max-width:100%; height:auto;" %>
+        </figure>
+      </div>
+      <div class="column is-6 ">
+        <div class="content">
+          <p class="title"><%= @book.title %></p>
+          <p class="subtitle is-6">
+            by <%= link_to @book&.author&.name, @book.author %>
+          </p>
+          <p class="is-size-6">
+            <a href="<%= books_by_genre_path(genre_id: @book.genres.first.id) %>">
+              <span class="has-text-link"><%= @book.genres.first.name %></span>
+            </a>
+          </p>
+        </div>
+        <div class="mb-1">
+          <b>
+            $<%= sprintf('%.2f', @book.price) %>
+          </b>
+          <% @book.formats.each do |book_format| %>
+            <span class="tag">
+              <%= book_format.name %>
+            </span>
+          <% end %>
+        </div>
+        <div class="is-flex is-align-items-center">
+          <div class="mr-2">
+            <span class="is-size-7"><i><%= @book.average_rating.to_i %> / 10</i></span>
+          </div>
+          <div class="flex-grow">
+            <progress class="progress is-primary" value="<%= @book.average_rating %>" max="10"><%= @book.average_rating %>%</progress>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
