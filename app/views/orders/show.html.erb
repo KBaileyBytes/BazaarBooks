@@ -1,10 +1,10 @@
 <section class="hero is-primary">
   <div class="hero-body">
     <p class="title">
-      View Profile
+      View Order
     </p>
     <p class="subtitle">
-      <%= @user.first_name.present? ? @user.first_name : @user.email %>
+      #<%= @order.id %>
     </p>
   </div>
 </section>
@@ -16,7 +16,7 @@
         <span>Profile</span>
       <% end %>
     </li>
-    <li class="tab-item <%= 'is-active' if current_page?(controller: 'orders', action: 'index') %>">
+    <li class="tab-item is-active">
       <%= link_to(user_orders_path(current_user)) do %>
         <span class="icon is-small"><i class="fas fa-clipboard-list" aria-hidden="true"></i></span>
         <span>Orders <sup><em>(<%= current_user.orders.count %>)</em></sup></span>
@@ -25,29 +25,44 @@
   </ul>
 </div>
 <div class="container">
+  <section class="section">
+    <%= @order.id %>
+    <%= @order.order_status %>
+    <%= @order.payment_status %>
+    <%= @order.payment_method %>
+    <%= @order.created_at %>
+  </section>
   <div class="columns is-centered">
     <div class="column is-half">
       <table class="table is-hoverable is-fullwidth is-striped">
         <thead>
           <tr>
             <th>Order ID</th>
-            <th>Date</th>
-            <th>Status</th>
-            <th>Items</th>
-            <th>Total</th>
+            <th>Title</th>
+            <th>Quantity</th>
+            <th>Unit Price</th>
+            <th>Subtotal</th>
           </tr>
         </thead>
         <tbody>
-          <% @orders.each do |order| %>
+          <% @order.order_items.each do |item| %>
             <tr>
-              <th><%= link_to order.id, order %></th>
-              <td><%= order.created_at %></td>
-              <td><%= order.order_status %></td>
-              <td><%= order.order_items.map { |i| i.unit_quantity }.reduce(:+) %></td>
-              <td><strong>$<%= order.order_items.map { |i| i.unit_quantity * i.unit_price }.reduce(:+) %></strong></td>
+              <td><%= image_tag item.book.image %></td>
+              <th><%= link_to item.book.title, book_path(item.book_id) %></th>
+              <th><%= item.unit_quantity %></th>
+              <th><%= item.unit_price %></th>
+              <th><%= item.subtotal %></th>
             </tr>
           <% end %>
         </tbody>
+        <tr>
+          <thead>
+            <tr>
+              <th>Total</th>
+            </tr>
+          </thead>
+          <th>$<%= @order.total_amount %></th>
+        </tr>
       </table>
     </div>
   </div>

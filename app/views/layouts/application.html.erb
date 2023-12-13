@@ -30,6 +30,23 @@
       </div>
       <div class="navbar-end">
         <div class="navbar-item">
+          <div class="field has-addons has-addons-centered">
+            <%= form_tag(search_path, method: :get) do %>
+              <p class="control">
+                <span class="select">
+                  <%= select_tag :category, options_for_select([['Everything', 'all'], ['Book', 'book'], ['Author', 'author']]) %>
+                </span>
+              </p>
+              <p class="control">
+                <%= text_field_tag :search, nil, placeholder: 'Search', class:"input" %>
+              </p>
+              <p class="control">
+                <%= button_tag 'Search', class: 'button is-primary', type: :submit %>
+              </p>
+            <% end %>
+          </div>
+        </div>
+        <div class="navbar-item">
           <% if user_signed_in? %>
             <p>Welcome <%= current_user.first_name.present? ? current_user.first_name : current_user.email %></p>
             <div class="navbar-item has-dropdown is-hoverable">
