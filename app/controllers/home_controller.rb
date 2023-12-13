@@ -10,7 +10,7 @@ class HomeController < ApplicationController
         @page_title = "Books in #{Genre.find(genre_id).name}"
       end
     else
-      books = Book.all.order('RANDOM()')
+      books = Book.all
       @page_title = "All Books"
     end
 

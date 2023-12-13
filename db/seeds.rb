@@ -1,5 +1,5 @@
 # require "csv"
-require "ruby-progressbar"
+# require "ruby-progressbar"
 
 # User.delete_all
 # Province.delete_all
@@ -193,20 +193,61 @@ require "ruby-progressbar"
 #   printf "\rBooks: %.2f%%", completed_percentage
 # end
 
-puts "\nCreated: \n\tAuthors: #{Author.count}\n\tBooks: #{Book.count}\n\tGenres: #{Genre.count}\n\tFormats: #{Format.count}\n\tBookGenres: #{BookGenre.count} \n\tBookFormats: #{BookFormat.count}"
-puts "Done."
+# puts "\nCreated: \n\tAuthors: #{Author.count}\n\tBooks: #{Book.count}\n\tGenres: #{Genre.count}\n\tFormats: #{Format.count}\n\tBookGenres: #{BookGenre.count} \n\tBookFormats: #{BookFormat.count}"
+# puts "Done."
 
-puts "Attaching images to each book..."
-sleep(1)
+# puts "Attaching images to each book..."
+# sleep(1)
 
-Book.where('id >= 26100').find_each(batch_size: 500) do |book|
-  file_path = "#{Rails.root.join("app/assets/images/#{book.path}")}"
+# Book.where('id >= 26100').find_each(batch_size: 500) do |book|
+#   file_path = "#{Rails.root.join("app/assets/images/#{book.path}")}"
 
-  if File.exist?(file_path) and !book.image.attached?
-    book.image.attach(io: File.open(file_path), filename: "book_cover.jpg",
-                          content_type: "image/jpg")
+#   if File.exist?(file_path) and !book.image.attached?
+#     book.image.attach(io: File.open(file_path), filename: "book_cover.jpg",
+#                           content_type: "image/jpg")
+#   end
+
+#   sleep(0.25)
+#   puts book.id
+# end
+
+Order.delete_all
+OrderItem.delete_all
+
+ActiveRecord::Base.connection.execute("DELETE FROM sqlite_sequence WHERE name='orders';")
+ActiveRecord::Base.connection.execute("DELETE FROM sqlite_sequence WHERE name='order_items';")
+
+
+User.all.each do |user|
+  puts "User Id: #{user.id}"
+  orders = rand(1..8) # Adjust the range for the number of orders per user
+  puts "Number Of Orders: #{orders}"
+
+  orders.times do |i|
+    order = user.orders.create(
+      order_status: "Pending", # Change as needed
+      payment_status: "Pending", # Change as needed
+      payment_method: "Credit Card", # Change as needed
+      total_amount: 0 # Will be updated below
+    )
+
+    order_items_count = rand(1..5) # Adjust the range for the number of order items per order
+    puts "Order #{i + 1} has #{order_items_count} order items."
+
+    order_items_count.times do |j|
+      book = Book.order("RANDOM()").first # Select a random book
+      unit_quantity = rand(1..3) # Adjust the range for the quantity of each book
+
+      order_item = order.order_items.create(
+        book_id: book.id,
+        unit_quantity: unit_quantity,
+        unit_price: book.price,
+        subtotal: unit_quantity * book.price
+      )
+
+      order.total_amount += order_item.subtotal
+      order.save
+      puts "Order Item: #{j + 1}\n\tBook ID: #{book.id}\n\tQuantity: #{unit_quantity}"
+    end
   end
-
-  sleep(0.25)
-  puts book.id
 end
