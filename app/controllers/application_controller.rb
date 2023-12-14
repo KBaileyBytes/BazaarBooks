@@ -8,14 +8,17 @@ class ApplicationController < ActionController::Base
 
     # Handle search based on the category
     if category == 'all'
-      @results = perform_search_everything(search_query)
+      @authors = perform_search_authors(search_query).page(params[:page]).per(20)
+      @results =  perform_search_books(search_query).page(params[:page]).per(20)
     elsif category == 'book'
-      @results = perform_search_books(search_query)
+      @results = perform_search_books(search_query).page(params[:page]).per(20)
     elsif category == 'author'
-      @results = perform_search_authors(search_query)
+      @authors = perform_search_authors(search_query).page(params[:page]).per(20)
     else
-      redirect_to home_path
+      pp "Error"
     end
+
+    @genres = Genre.all.order(name: :asc)
   end
 
   protected
@@ -24,20 +27,12 @@ class ApplicationController < ActionController::Base
     @user_pages = UserPage.all
   end
 
-  def perform_search_everything(query)
-    # Perform a search across both books and authors
-    # Return combined results matching the query
-    @results = Book.search(query) + Author.search(query)
-  end
-
   def perform_search_books(query)
-    # Search only in books
-    @results = Book.search(query)
+    Book.where("title LIKE ?", "%#{query}%")
   end
 
   def perform_search_authors(query)
-    # Search only in authors
-    @results = Author.search(query)
+    Author.where("name LIKE ?", "%#{query}%")
   end
 
   def configure_permitted_parameters
