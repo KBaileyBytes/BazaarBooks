@@ -77,3 +77,4 @@ gem "faker"
 gem "ruby-progressbar"
 gem "font-awesome-sass", "~> 6.5.1"
 gem 'kaminari'
+gem 'stripe'
