@@ -6,4 +6,7 @@ class User < ApplicationRecord
 
   belongs_to :province
   has_many :orders
+
+  validates :email, presence: true, uniqueness: true
+  validates :is_admin, presence: true
 end

@@ -7,4 +7,7 @@ class Book < ApplicationRecord
   has_many :book_formats
   has_many :formats, through: :book_formats
   has_one_attached :image
+
+  validates :title, presence: true
+  validates :price, presence: true
 end
