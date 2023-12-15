@@ -47,6 +47,10 @@
               </div>
             <% end %>
           </div>
+          <div class="navbar-item mx-4">
+            Cart:
+            <%= cart.count %> items | <%= link_to 'View Cart', shopping_cart_index_path %>
+          </div>
         </div>
         <div class="navbar-item">
           <% if user_signed_in? %>

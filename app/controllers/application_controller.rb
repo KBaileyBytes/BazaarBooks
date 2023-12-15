@@ -1,6 +1,7 @@
 class ApplicationController < ActionController::Base
   before_action :configure_permitted_parameters, if: :devise_controller?
   before_action :set_user_pages
+  before_action :initialize_session
 
   def search
     category = params[:category]
@@ -40,4 +41,37 @@ class ApplicationController < ActionController::Base
   end
 
   helper_method :set_user_pages
+  helper_method :cart
+  helper_method :add_to_cart
+
+  def initialize_session
+    session[:shopping_cart] ||= {}
+  end
+
+  def add_to_cart(book_id, quantity)
+    book = Book.find(book_id)
+    session[:shopping_cart][book.id.to_s] ||= 0
+    session[:shopping_cart][book.id.to_s] += quantity.to_i
+  end
+
+  def remove_from_cart(book_id, quantity)
+    book = book.find(book_id)
+    if session[:shopping_cart][book.id.to_s]
+      session[:shopping_cart][book.id.to_s] -= quantity.to_i
+      session[:shopping_cart].delete(book.id.to_s) if session[:shopping_cart][book.id.to_s] <= 0
+    end
+  end
+
+  def clear_cart
+    session[:shopping_cart] = {}
+  end
+
+  def cart
+    cart_items = []
+    session[:shopping_cart].each do |book_id, quantity|
+      book = book.find(book_id)
+      cart_items << { book: book, quantity: quantity }
+    end
+    cart_items
+  end
 end
