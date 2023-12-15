@@ -10,4 +10,14 @@ class Book < ApplicationRecord
 
   validates :title, presence: true
   validates :price, presence: true
+
+  before_save :resize_image
+
+  private
+
+  def resize_image
+    return unless image.attached?
+
+    image.variant(resize_to_limit: [200, 200])
+  end
 end
